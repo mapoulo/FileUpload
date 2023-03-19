@@ -13,16 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.Services.UploadService;
 
 @Controller
 public class UploadController {
-	
-	@Autowired
-	UploadService service;
-	
-	
 
+	
+	
+      // Replace the C:\\Users\\nkwej .. with your computer path 
 	  private static String UPLOADED_FOLDER = "C:\\Users\\nkwej\\OneDrive\\Desktop\\Uploads\\";
 	  
 	  @RequestMapping("/")
