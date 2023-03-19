@@ -1,0 +1,50 @@
+package com.example.demo;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.demo.Controllers.UploadController;
+
+public class UploadControllerTest {
+	
+	
+	 private static final String UPLOADED_FOLDER = "src/test/resources/";
+
+	    @Test
+	    void handleFileUploadShouldReturnSuccessMessage() throws IOException {
+	        byte[] content = "test content".getBytes();
+	        MultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", content);
+	        Model model = new ModelMap();
+
+	        String result = new UploadController().handleFileUpload(file, model);
+
+	        assertEquals("index", result);
+	        assertEquals("File successfully uploaded: test.txt ====file", model.getAttribute("message"));
+	        Path path = Paths.get(UPLOADED_FOLDER + "test.txt");
+	        byte[] bytes = Files.readAllBytes(path);
+	        assertArrayEquals(content, bytes);
+	    }
+
+	    @Test
+	    void handleFileUploadShouldReturnErrorMessageWhenFileIsEmpty() {
+	        MultipartFile file = new MockMultipartFile("file", new byte[0]);
+	        Model model = new ModelMap();
+
+	        String result = new UploadController().handleFileUpload(file, model);
+
+	        assertEquals("index", result);
+	        assertEquals("Please select a file to upload.", model.getAttribute("message"));
+	    }
+
+}
